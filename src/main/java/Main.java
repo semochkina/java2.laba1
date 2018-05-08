@@ -1,13 +1,12 @@
 import java.util.Scanner;
 
+/**
+ *  Vychislit' opredelitel' matricy metodom Gaussa
+ *
+ *  dlya etogo privedem matricu k verhney treugol'noy matricy
+ *  proizvedenie chisel na glavnoy diagonali budet ravno opredelitelyu
+ */
 public class Main {
-
-    /**
-     *  Vychislit' opredelitel' matricy metodom Gaussa
-     *
-     *  dlya etogo privedem matricu k verhney treugol'noy matricy
-     *  proizvedenie chisel na glavnoy diagonali budet ravno opredelitelyu
-     */
 
     public static void main(String[] args) throws Exception {
 
