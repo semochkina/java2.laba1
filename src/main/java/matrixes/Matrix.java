@@ -1,38 +1,55 @@
+package matrixes;
+
+import interfaces.IMatrix;
+
+import java.util.Arrays;
+
 public class Matrix implements IMatrix {
 
+    private boolean flagCache = false;
+    private double memDeterminant;
+
     // Размерность матрицы
-    int size;
+    private int size;
 
     // Матрица
-    double[][] matrix;
+    private double[] matrix;
 
     public Matrix(int size) {
         this.size = size;
-        matrix = new double[size][size];
+        matrix = new double[size*size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                matrix[i][j] = 0;
+                matrix[i] = 0;
             }
         }
     }
 
+    @Override
     public double getCell(int x, int y) {
-        return matrix[x][y];
+        return matrix[x * size + y];
     }
 
+    @Override
     public void setCell(int x, int y, double value) {
-        matrix[x][y] = value;
+        matrix[x * size + y] = value;
+        flagCache = false;
     }
 
-    private void perestavlyaemStroki(int numRow1, int numRow2){
-        for (int i = 0; i < size; i++){
-            double mem = matrix[numRow1][i];
-            matrix[numRow1][i] = matrix[numRow2][i];
-            matrix[numRow2][i] = mem;
+    // perestavlyaem stroki matrica
+    private void perestavlyaemStroki(int nLine1, int nLine2){
+        for (int i = 0; i < size - 1; i++) {
+            double currValue = getCell(nLine1, i);
+            setCell(nLine1, i, getCell(nLine2, i));
+            setCell(nLine2, i, currValue);
         }
     }
 
-    public double determinant() {
+    @Override
+    public double getDeterminant() {
+        if (flagCache) {
+            return memDeterminant;
+        }
         // opredelitel'
         double value = 1;
         // privodim k verhney treugol'noy matricy
@@ -54,39 +71,65 @@ public class Matrix implements IMatrix {
                 }
                 // perestavlyaem stroki
                 perestavlyaemStroki(i, n);
-
                 // pri perestanovki strok menyaetsya znak
                 value *= -1;
-                System.out.println("\nChange rows  " + i + " -> " + n);
+                System.out.println("Change rows  " + i + " -> " + n);
                 outMatrix();
             }
-
             // Operaciya dobavleniya k odnoy iz strok matricy drugoy stroki, umnojennoy na nekotoroe chislo, ne menyaet opredelitel'
             // k ostal'nym strokam dobavlyaem tekushuyu s takim koefficientom, chtoby v dannoy kolonke byl 0
             for (int j = i + 1; j < size; j++) {
                 if (getCell(j, i) == 0) {
-                    System.out.println("\ndon't change row number " + j);
+                    System.out.println("don't change row number " + j);
                 } else {
                     double kf = getCell(j, i) / getCell(i, i) * -1;
-                    setCell(j, i, 0);
-                    for (int k = i+1; k < size; k++)
+                    // setCell(j, i, 0);
+                    for (int k = i; k < size; k++)
                         setCell(j, k, getCell(j, k) + getCell(i, k) * kf);
-                    System.out.println("\nN row = " + j + ", kf == " + kf);
+                    System.out.println("N row = " + j + ", kf == " + kf);
                     outMatrix();
                 }
             }
             value *= getCell(i, i);
         }
         value *= getCell(size - 1, size - 1);
+        memDeterminant = value;
+        flagCache = true;
         return value;
     }
 
+    @Override
     public void outMatrix() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                System.out.print(matrix[i][j] + "\t");
+                System.out.print(getCell(i, j) + "\t");
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Matrix matrix1 = (Matrix) o;
+
+        if (flagCache != matrix1.flagCache) return false;
+        if (Double.compare(matrix1.memDeterminant, memDeterminant) != 0) return false;
+        if (size != matrix1.size) return false;
+        return Arrays.equals(matrix, matrix1.matrix);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (flagCache ? 1 : 0);
+        temp = Double.doubleToLongBits(memDeterminant);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + size;
+        result = 31 * result + Arrays.hashCode(matrix);
+        return result;
     }
 }

@@ -1,3 +1,7 @@
+package matrixes;
+
+import interfaces.IMatrix;
+
 import java.util.Scanner;
 
 /**
@@ -28,9 +32,9 @@ public class Main {
         System.out.println("\nThe input matrix");
         iMatrix.outMatrix();
 
-        double determinant = iMatrix.determinant();
+        double determinant = iMatrix.getDeterminant();
 
-        System.out.println("\ndeterminant this matrix = " + determinant);
+        System.out.println("\ngetDeterminant this matrix = " + determinant);
 
         System.exit(0);
     }

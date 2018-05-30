@@ -1,3 +1,5 @@
+package interfaces;
+
 public interface IMatrix {
 
     // poluchit' element s zadannymi indeksami
@@ -7,8 +9,14 @@ public interface IMatrix {
     void setCell(int x, int y, double value);
 
     // vychislit' opredelitel' matricy (metodom Gaussa)
-    double determinant();
+    double getDeterminant();
 
     // vyvodit matricu
     void outMatrix();
+
+    // compare classes
+    boolean equals(Object o);
+
+    // hash-code - unikal'noe znachenie any object
+    int hashCode();
 }
