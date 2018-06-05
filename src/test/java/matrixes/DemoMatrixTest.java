@@ -14,7 +14,7 @@ public class DemoMatrixTest {
         IDemoMatrix matrix2 = new DemoMatrix(2);
 
         // заполняем матрицу из файла
-        try (InputStream inputStream = DemoMatrixTest.class.getResourceAsStream("matrix2x2.txt")) {
+        try (InputStream inputStream = DemoMatrixTest.class.getResourceAsStream("/matrix2x2.txt")) {
             matrix2.readFromStream(inputStream);
         } catch (Exception ex) {
             Assert.fail("Error read file - " + ex.getMessage());
@@ -60,14 +60,14 @@ public class DemoMatrixTest {
         IDemoMatrix matrix3 = new DemoMatrix(3);
 
         // заполняем матрицу из файла
-        try (InputStream inputStream = DemoMatrixTest.class.getResourceAsStream("matrix2x2.txt")) {
+        try (InputStream inputStream = DemoMatrixTest.class.getResourceAsStream("/matrix2x2.txt")) {
             matrix3.readFromStream(inputStream);
             Assert.fail("Error");
         } catch (Exception ex) {
             // ожидаемая ошибка - не хватает параметров
         }
 
-        try (InputStream inputStream = DemoMatrixTest.class.getResourceAsStream("matrix3x3.txt")) {
+        try (InputStream inputStream = DemoMatrixTest.class.getResourceAsStream("/matrix3x3.txt")) {
             matrix3.readFromStream(inputStream);
         } catch (Exception ex) {
             Assert.fail("Error read file - " + ex.getMessage());
